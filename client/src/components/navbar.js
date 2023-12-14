@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const Navbar = () => {
   const [cookies, setCookies] = useCookies(["access_token"]);
@@ -14,14 +15,32 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
-      <Link to="/">Home</Link>
-      <Link to="/create-recipe">Create Recipe</Link>
-      <Link to="/saved-recipes">Save Recipe</Link>
-      {!cookies.access_token ? (
-        <Link to="/auth">Login/Register</Link>
-      ) : (
-        <button onClick={logout}>Logout</button>
-      )}
+      <div className="navbar__items">
+        <div className="left">
+          <div className="navbar--logo">logo</div>
+          <Link className="navbar--item" to="/">
+            Home
+          </Link>
+          <Link className="navbar--item" to="/create-recipe">
+            Create Recipe
+          </Link>
+          <Link className="navbar--item" to="/saved-recipes">
+            Save Recipe
+          </Link>
+        </div>
+        <div className="right">
+          <div className="navbar--hamburger">
+            <MenuIcon />
+          </div>
+          {!cookies.access_token ? (
+            <Link className="navbar--item" to="/auth">
+              Login/Register
+            </Link>
+          ) : (
+            <button onClick={logout}>Logout</button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
