@@ -11,14 +11,16 @@ body {
 
    .navbar__items {
         display: flex;
+        align-items: center;
         width: 100%;
         height: 60px;
-        justify-content: space-between;
 
-        .left, 
-        .right {
-            display: flex;
-            align-items: center;
+        .navbar--login {
+            margin-left: auto;
+        }
+
+        .navbar--logout {
+            margin: 0 10px 0 auto;
         }
 
         .navbar--logo {
@@ -35,25 +37,30 @@ body {
                 height: 60px;
             }
         }
+
+        .navbar--secondary {
+            color: dodgerblue;
+        }
  
-        .navbar--item {
+        a {
             text-decoration: none;
             color: white;
             margin-right: 10px;
         }
 
-        .navbar--item:hover {
+        a:hover {
             color: dodgerblue;
         }
 
         @media screen and (max-width: 768px){
-            .navbar--item {
+            a {
                 display: none;
             }
 
             .navbar--hamburger {
                 display: block;
                 color: white;
+                margin-left: auto;
             }
         }
    }
