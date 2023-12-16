@@ -19,6 +19,14 @@ const Navbar = () => {
     navigate("/auth");
   };
 
+  const validateCheck = (path) => {
+    if (!cookies.access_token) {
+      return path === "/create-recipe"
+        ? alert("Please login to create a recipe")
+        : alert("Please login to see saved recipes");
+    }
+  };
+
   return (
     <div className="navbar">
       <div className="navbar__items">
@@ -42,15 +50,31 @@ const Navbar = () => {
               </Link>
             );
           }
-          return (
-            <Link
-              key={index}
-              to={item.path}
-              className={`${isSamePath ? "navbar--secondary" : ""}`}
-            >
-              {item.name}
-            </Link>
-          );
+
+          if (item.path === "/") {
+            return (
+              <Link
+                key={index}
+                to={item.path}
+                className={`${isSamePath ? "navbar--secondary" : ""}`}
+              >
+                {item.name}
+              </Link>
+            );
+          }
+
+          if (item.path !== "auth" && item.path !== "/") {
+            return (
+              <Link
+                key={index}
+                to={cookies.access_token ? item.path : "/auth"}
+                className={`${isSamePath ? "navbar--secondary" : ""}`}
+                onClick={() => validateCheck(item.path)}
+              >
+                {item.name}
+              </Link>
+            );
+          }
         })}
       </div>
     </div>

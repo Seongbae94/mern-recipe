@@ -43,7 +43,7 @@ const CreateRecipe = () => {
       alert("Recipe Created!");
       navigate("/");
     } catch (error) {
-      alert("Please fill all fields.");
+      alert("Every field must be filled!");
     }
   };
 
