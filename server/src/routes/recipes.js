@@ -33,8 +33,20 @@ router.put("/", async (req, res) => {
     const recipe = await RecipeModel.findById(req.body.recipeID);
     const user = await UserModel.findById(req.body.userID);
 
-    user.savedRecipes.push(recipe);
-    await user.save();
+    if (req.body.action === "save") {
+      user.savedRecipes.push(recipe);
+      await user.save();
+    }
+
+    if (req.body.action === "remove") {
+      const filteredRecipes = user.savedRecipes.filter(
+        (recipeID) => !recipeID.equals(recipe._id)
+      );
+
+      user.savedRecipes = filteredRecipes;
+      await user.save();
+    }
+
     res.json({ savedRecipes: user.savedRecipes });
   } catch (error) {
     res.json(error);

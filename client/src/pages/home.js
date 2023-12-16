@@ -12,6 +12,7 @@ const Home = () => {
       await axios.put("http://localhost:3001/recipes", {
         recipeID,
         userID,
+        action: "save",
       });
 
       alert("The recipe is saved!");
@@ -19,6 +20,22 @@ const Home = () => {
       fetchSavedRecipe();
     } catch (error) {
       alert("Please login to save the recipe!");
+    }
+  };
+
+  const saveCancel = async (recipeID) => {
+    try {
+      await axios.put("http://localhost:3001/recipes", {
+        recipeID,
+        userID,
+        action: "remove",
+      });
+
+      alert("The recipe is unsaved!");
+      fetchRecipe();
+      fetchSavedRecipe();
+    } catch (error) {
+      // alert("Please login to save the recipe!");
     }
   };
 
@@ -67,6 +84,7 @@ const Home = () => {
                     {isRecipeSaved(recipe._id) ? "Saved" : "Save"}
                   </button>
                 )}
+                <button onClick={() => saveCancel(recipe._id)}>cancel</button>
               </div>
               <div>
                 <p>{recipe.instructions}</p>
