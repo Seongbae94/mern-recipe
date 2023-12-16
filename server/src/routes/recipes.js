@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
     const response = await recipe.save();
     res.json(response);
   } catch (error) {
-    res.json(error);
+    res.status(400).json(error);
   }
 });
 
