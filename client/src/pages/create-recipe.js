@@ -1,14 +1,20 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useGetUserID } from "../hooks/useGetUserID";
+import { useNavigate } from "react-router-dom";
 
 const CreateRecipe = () => {
+  const userID = useGetUserID();
   const [recipeInputs, setRecipeInputs] = useState({
     name: "",
     ingredients: [],
     instructions: "",
     imageUrl: "",
     cookingTime: 0,
-    userOwner: "",
+    userOwner: userID,
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,12 +35,15 @@ const CreateRecipe = () => {
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      await axios.post("http://localhost:3001/recipes", recipeInputs);
+      alert("Recipe Created!");
+      navigate("/");
     } catch (error) {
-      console.log(error);
+      alert("Please fill all fields.");
     }
   };
 
@@ -48,7 +57,7 @@ const CreateRecipe = () => {
         <button onClick={addIngredient} type="button">
           Add Ingredient
         </button>
-        {recipeInputs.ingredients.map((ingredient, index) => {
+        {recipeInputs.ingredients?.map((ingredient, index) => {
           return (
             <input
               key={index}
