@@ -32,8 +32,6 @@ const Home = () => {
     fetchRecipe();
   }, []);
 
-  console.log(recipes);
-  console.log(userID);
   return (
     <div>
       <h1>Recipes</h1>
@@ -43,12 +41,14 @@ const Home = () => {
             <li key={recipe._id}>
               <div>
                 <h2>{recipe.name}</h2>
-                <button
-                  onClick={() => saveRecipe(recipe._id)}
-                  disabled={recipe.userOwner === userID}
-                >
-                  Save
-                </button>
+                {userID && (
+                  <button
+                    onClick={() => saveRecipe(recipe._id)}
+                    disabled={recipe.userOwner === userID}
+                  >
+                    Save
+                  </button>
+                )}
               </div>
               <div>
                 <p>{recipe.instructions}</p>
