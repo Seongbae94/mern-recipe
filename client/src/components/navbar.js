@@ -33,17 +33,18 @@ const Navbar = () => {
 
           if (item.path === "/auth") {
             return cookies.access_token ? (
-              <button className="navbar--logout" onClick={logout}>
+              <button key={index} className="navbar--logout" onClick={logout}>
                 Logout
               </button>
             ) : (
-              <Link className={`navbar--login`} to={item.path}>
+              <Link key={index} className={`navbar--login`} to={item.path}>
                 {item.name}
               </Link>
             );
           }
           return (
             <Link
+              key={index}
               to={item.path}
               className={`${isSamePath ? "navbar--secondary" : ""}`}
             >
