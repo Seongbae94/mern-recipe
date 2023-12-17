@@ -53,6 +53,26 @@ router.put("/", async (req, res) => {
   }
 });
 
+//delete a recipe
+router.delete("/", async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.body.userID);
+
+    if (user.savedRecipes.length > 0) {
+      const filteredRecipes = user.savedRecipes.filter(
+        (recipeID) => !recipeID.equals(req.body.recipeID)
+      );
+
+      user.savedRecipes = filteredRecipes;
+      await user.save();
+    }
+    await RecipeModel.deleteOne({ _id: req.body.recipeID });
+    res.json({ deleteRecipeID: req.body.recipeID });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
+
 //get saved recipes Id
 router.get("/savedRecipes/ids/:userID", async (req, res) => {
   try {

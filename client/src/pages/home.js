@@ -39,6 +39,23 @@ const Home = () => {
     }
   };
 
+  const deleteRecipe = async (recipeID) => {
+    try {
+      await axios.delete("http://localhost:3001/recipes", {
+        data: {
+          recipeID,
+          userID,
+        },
+      });
+
+      alert("The recipe is deleted!");
+      fetchRecipe();
+      fetchSavedRecipe();
+    } catch (error) {
+      alert("An error occurred. Please try again!");
+    }
+  };
+
   const isRecipeSaved = (id) => savedRecipes.includes(id);
 
   const fetchRecipe = async () => {
@@ -72,6 +89,7 @@ const Home = () => {
       <h1>Recipes</h1>
       <ul>
         {recipes.map((recipe) => {
+          console.log(recipe);
           return (
             <li key={recipe._id}>
               <div>
@@ -85,6 +103,11 @@ const Home = () => {
                   </button>
                 )}
                 <button onClick={() => saveCancel(recipe._id)}>cancel</button>
+                {recipe.userOwner === userID && (
+                  <button onClick={() => deleteRecipe(recipe._id)}>
+                    delete
+                  </button>
+                )}
               </div>
               <div>
                 <p>{recipe.instructions}</p>
