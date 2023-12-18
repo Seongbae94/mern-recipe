@@ -15,6 +15,16 @@ router.get("/", async (req, res) => {
   }
 });
 
+//get a specific recipe
+router.get("/:recipeID", async (req, res) => {
+  try {
+    const recipe = await RecipeModel.findById(req.params.recipeID);
+    res.json(recipe);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 //create a recipe
 router.post("/", async (req, res) => {
   const recipe = new RecipeModel(req.body);
@@ -27,7 +37,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-//save a recipe
+//save or remove a recipe
 router.put("/", async (req, res) => {
   try {
     const recipe = await RecipeModel.findById(req.body.recipeID);
