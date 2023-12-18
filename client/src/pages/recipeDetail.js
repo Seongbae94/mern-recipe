@@ -35,7 +35,6 @@ const RecipeDetail = () => {
       const result = await axios.get(
         `http://localhost:3001/recipes/savedRecipes/ids/${userID}`
       );
-      console.log(result);
       setSavedRecipes(result.data.savedRecipes);
     } catch (error) {
       console.log(error);
@@ -91,7 +90,6 @@ const RecipeDetail = () => {
     fetchSavedRecipe();
   }, []);
 
-  console.log(recipe);
   return (
     <Container>
       <div className="recipe--detail">
