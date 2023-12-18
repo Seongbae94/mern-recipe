@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -12,7 +12,26 @@ const Navbar = () => {
     { name: "My Recipes", path: "/my-recipes" },
     { name: "LogIn", path: "/auth" },
   ]);
+  const [navigationOpen, setNavigationeOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let thresholdWidth = 768;
+    let previousWidth = window.innerWidth;
+    window.onresize = function () {
+      let movedUpThroughThreshold =
+        previousWidth < thresholdWidth && window.innerWidth >= thresholdWidth;
+      let movedDownThroughThreshold =
+        previousWidth >= thresholdWidth && window.innerWidth <= thresholdWidth;
+
+      if (movedUpThroughThreshold || movedDownThroughThreshold) {
+        console.log("passed threshold", previousWidth, "->", window.innerWidth);
+        setNavigationeOpen(false);
+      }
+
+      previousWidth = window.innerWidth;
+    };
+  }, []);
 
   const logout = () => {
     setCookies("access_token", "");
@@ -40,11 +59,48 @@ const Navbar = () => {
     <div className="navbar">
       <div className="navbar--items">
         <div className="navbar--logo">logo</div>
-        <div className="navbar--hamburger">
+        <div
+          className="navbar--hamburger"
+          onClick={() => setNavigationeOpen(!navigationOpen)}
+        >
           <MenuIcon />
         </div>
 
-        <div className="navbar--items--list">
+        {/* navber on mobile */}
+        {navigationOpen && (
+          <div
+            className="navbar--mobile--background"
+            onClick={() => setNavigationeOpen(false)}
+          >
+            <div className="navbar--list--mobile">
+              {navlist.map((item, index) => {
+                if (cookies.access_token && item.path === "/auth") {
+                  return (
+                    <Link
+                      to={item.path}
+                      key={index}
+                      onClick={() => setNavigationeOpen(false)}
+                    >
+                      Logout
+                    </Link>
+                  );
+                }
+                return (
+                  <Link
+                    to={item.path}
+                    key={index}
+                    onClick={() => setNavigationeOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* navber on desktop */}
+        <div className="navbar--list--desktop">
           {navlist.map((item, index) => {
             const path = window.location.pathname;
             const isSamePath = path === item.path;
