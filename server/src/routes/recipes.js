@@ -107,4 +107,14 @@ router.get("/savedRecipes/:userID", async (req, res) => {
   }
 });
 
+//get my reipces
+router.get("/myRecipes/:userID", async (req, res) => {
+  try {
+    const recipes = await RecipeModel.find({ userOwner: req.params.userID });
+    res.json({ myRecipes: recipes });
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 export { router as recipesRouter };

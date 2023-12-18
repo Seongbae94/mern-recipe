@@ -1,6 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { ThumbUpAlt, Delete, ThumbUpOffAltOutlined } from "@mui/icons-material";
+import {
+  ThumbUpAlt,
+  Delete,
+  ThumbUpOffAltOutlined,
+  Undo,
+} from "@mui/icons-material";
 import { useGetUserID } from "../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
 
@@ -37,7 +42,7 @@ const RecipeDetail = () => {
   };
 
   const recipeAction = async (action) => {
-    if (action !== "delete") {
+    if (action === "save" || action === "remove") {
       try {
         await axios.put(`http://localhost:3001/recipes`, {
           userID,
@@ -51,7 +56,9 @@ const RecipeDetail = () => {
       } catch (error) {
         console.log(error);
       }
-    } else {
+    }
+
+    if (action === "delete") {
       try {
         if (!window.confirm("Are you sure to delete this recipe?")) return null;
 
@@ -69,6 +76,10 @@ const RecipeDetail = () => {
       } catch (error) {
         alert("An error occurred. Please try again!");
       }
+    }
+
+    if (action === "return") {
+      navigate(-1);
     }
   };
 
@@ -100,6 +111,10 @@ const RecipeDetail = () => {
             <Delete />
           </button>
         )}
+
+        <button className="button-undo" onClick={() => recipeAction("return")}>
+          <Undo />
+        </button>
       </div>
       <h2>{recipe.name}</h2>
       <img src={recipe.imageUrl} alt={recipe.name} />

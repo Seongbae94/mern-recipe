@@ -9,6 +9,7 @@ const Navbar = () => {
     { name: "Home", path: "/" },
     { name: "Create Recipe", path: "/create-recipe" },
     { name: "Saved Recipes", path: "/saved-recipes" },
+    { name: "My Recipes", path: "/my-recipes" },
     { name: "LogIn", path: "/auth" },
   ]);
   const navigate = useNavigate();
