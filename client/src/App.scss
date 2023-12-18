@@ -97,10 +97,6 @@ body {
 
   }
 
-  .create--recipe {
-
-  }
-
   .recipes {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -213,6 +209,78 @@ body {
             width: 100%;
             border-radius: 10px;
             margin: 20px 0;
+        }
+    }
+
+    .recipe--form {
+        width: 90%;
+        max-width: 768px;
+        margin: 0 auto;
+        font-size: 1.6rem;
+
+        form {
+            display:flex;
+            flex-direction: column;
+
+            input {
+                height: 30px;
+                margin-top: 5px;
+            }
+
+            .form--input--ingredient {
+                display: flex;
+                position: relative;
+                align-items: center;
+                margin-top: 5px;
+                input {
+                    width: 100%;
+                    margin-top: 0px;
+                    overflow: hidden;
+                }
+
+                button {
+                    width: 36px;
+                    height: 36px;
+                    // border-radius: 5px;
+                    overflow: hidden;
+                    position: absolute;
+                    right: 0;
+                    border: 1px solid dodgerblue;
+                    background-color: white;
+                    color: dodgerblue;
+                    // margin: 5px 0 0;
+                }
+
+                button:hover {
+                    background-color: dodgerblue;
+                    color: white;
+                    border: 0;
+                }
+
+            }
+
+            .form--button {
+                width: 100%;
+                max-width: 150px;
+                height: 30px;
+                margin-top: 5px;
+                color: dodgerblue;
+                background-color: white;
+                border: 1px solid gray;
+                border-radius: 5px;
+            }
+
+            .form--button:hover {
+                color: white;
+                background-color: dodgerblue;
+                outline: 0;
+                border: 0;
+            }
+
+            .button--end {
+                margin-left: auto;
+            }
+
         }
     }
   

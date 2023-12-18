@@ -52,13 +52,12 @@ const Navbar = () => {
             if (item.path === "/") {
               return (
                 <div
+                  key={index}
                   className={`nav--item ${
                     isSamePath ? "navbar--secondary navbar--marker" : ""
                   }`}
                 >
-                  <Link key={index} to={item.path}>
-                    {item.name}
-                  </Link>
+                  <Link to={item.path}>{item.name}</Link>
                 </div>
               );
             }
@@ -66,12 +65,12 @@ const Navbar = () => {
             if (item.path !== "/auth" && item.path !== "/") {
               return (
                 <div
+                  key={index}
                   className={`nav--item ${
                     isSamePath ? "navbar--secondary navbar--marker" : ""
                   }`}
                 >
                   <Link
-                    key={index}
                     to={cookies.access_token ? item.path : "/auth"}
                     className={`${isSamePath ? "navbar--secondary" : ""}`}
                     onClick={() => validateCheck(item.path)}
@@ -88,8 +87,8 @@ const Navbar = () => {
                   Logout
                 </button>
               ) : (
-                <div className="nav--item">
-                  <Link key={index} className={`navbar--login`} to={item.path}>
+                <div className="nav--item" key={index}>
+                  <Link className={`navbar--login`} to={item.path}>
                     {item.name}
                   </Link>
                 </div>

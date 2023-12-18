@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useGetUserID } from "../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
+import { Close } from "@mui/icons-material";
 
 const CreateRecipe = () => {
   const userID = useGetUserID();
@@ -35,6 +36,14 @@ const CreateRecipe = () => {
     }));
   };
 
+  const removeIngredient = (e, index) => {
+    const filteredIngredients = recipeInputs.ingredients.filter(
+      (ingredient, i) => i !== index
+    );
+
+    setRecipeInputs((prev) => ({ ...prev, ingredients: filteredIngredients }));
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -48,23 +57,27 @@ const CreateRecipe = () => {
   };
 
   return (
-    <div className="create-recipe">
+    <div className="recipe--form">
       <h1>Create Recipe</h1>
       <form onSubmit={onSubmit}>
         <label htmlFor="name">Name</label>
         <input type="text" id="name" name="name" onChange={handleChange} />
         <label htmlFor="ingredients">Ingredients</label>
-        <button onClick={addIngredient} type="button">
+        <button onClick={addIngredient} type="button" className="form--button">
           Add Ingredient
         </button>
         {recipeInputs.ingredients?.map((ingredient, index) => {
           return (
-            <input
-              key={index}
-              type="text"
-              value={ingredient}
-              onChange={(e) => handleIngredientChange(e, index)}
-            />
+            <div className="form--input--ingredient" key={index}>
+              <input
+                type="text"
+                value={ingredient}
+                onChange={(e) => handleIngredientChange(e, index)}
+              />
+              <button onClick={(e) => removeIngredient(e, index)} type="button">
+                <Close />
+              </button>
+            </div>
           );
         })}
         <label htmlFor="instructions">Instructions</label>
@@ -72,6 +85,7 @@ const CreateRecipe = () => {
           id="instructions"
           name="instructions"
           onChange={handleChange}
+          rows={5}
         ></textarea>
         <label htmlFor="imageUrl">Image URL</label>
         <input
@@ -87,7 +101,9 @@ const CreateRecipe = () => {
           name="cookingTime"
           onChange={handleChange}
         />
-        <button type="submit">Create Recipe</button>
+        <button type="submit" className="form--button button--end">
+          Create Recipe
+        </button>
       </form>
     </div>
   );
