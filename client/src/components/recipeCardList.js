@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const RecipeCard = ({ recipes }) => {
+const RecipeCardList = ({ recipes }) => {
   const navigate = useNavigate();
 
   const showDetailPage = (recipeID) => {
@@ -9,7 +9,7 @@ const RecipeCard = ({ recipes }) => {
   };
 
   return (
-    <div className="recipes">
+    <div className="recipe--card--list">
       {recipes.map((recipe, index) => {
         return (
           <div
@@ -27,4 +27,4 @@ const RecipeCard = ({ recipes }) => {
   );
 };
 
-export default RecipeCard;
+export default RecipeCardList;

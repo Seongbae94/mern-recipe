@@ -3,6 +3,7 @@ import axios from "axios";
 import { useGetUserID } from "../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
 import { Close } from "@mui/icons-material";
+import Container from "../components/container";
 
 const CreateRecipe = () => {
   const userID = useGetUserID();
@@ -57,18 +58,18 @@ const CreateRecipe = () => {
   };
 
   return (
-    <div className="recipe--form">
+    <Container>
       <h1>Create Recipe</h1>
       <form onSubmit={onSubmit}>
         <label htmlFor="name">Name</label>
         <input type="text" id="name" name="name" onChange={handleChange} />
         <label htmlFor="ingredients">Ingredients</label>
-        <button onClick={addIngredient} type="button" className="form--button">
+        <button onClick={addIngredient} type="button">
           Add Ingredient
         </button>
         {recipeInputs.ingredients?.map((ingredient, index) => {
           return (
-            <div className="form--input--ingredient" key={index}>
+            <div className="input--ingredient" key={index}>
               <input
                 type="text"
                 value={ingredient}
@@ -101,11 +102,11 @@ const CreateRecipe = () => {
           name="cookingTime"
           onChange={handleChange}
         />
-        <button type="submit" className="form--button button--end">
+        <button type="submit" className="button--end">
           Create Recipe
         </button>
       </form>
-    </div>
+    </Container>
   );
 };
 

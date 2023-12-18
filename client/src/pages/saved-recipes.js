@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useGetUserID } from "../hooks/useGetUserID";
-import RecipeCard from "../components/recipeCard";
+import RecipeCardList from "../components/recipeCardList";
+import Container from "../components/container";
 
 const SavedRecipes = () => {
   const [recipes, setSavedRecipes] = useState([]);
@@ -19,10 +20,10 @@ const SavedRecipes = () => {
   }, []);
 
   return (
-    <div>
+    <Container>
       <h1>Saved Recipes</h1>
-      <RecipeCard recipes={recipes} />
-    </div>
+      <RecipeCardList recipes={recipes} />
+    </Container>
   );
 };
 

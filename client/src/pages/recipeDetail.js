@@ -8,6 +8,7 @@ import {
 } from "@mui/icons-material";
 import { useGetUserID } from "../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
+import Container from "../components/container";
 
 const RecipeDetail = () => {
   const [recipe, setRecipe] = useState([]);
@@ -90,46 +91,55 @@ const RecipeDetail = () => {
     fetchSavedRecipe();
   }, []);
 
+  console.log(recipe);
   return (
-    <div className="recipe--detail">
-      <div className="recipe--detail--buttons">
-        {isRecipeSaved() ? (
-          <button onClick={() => recipeAction("remove")}>
-            <ThumbUpAlt />
-          </button>
-        ) : (
-          <button onClick={() => recipeAction("save")}>
-            <ThumbUpOffAltOutlined />
-          </button>
-        )}
+    <Container>
+      <div className="recipe--detail">
+        <div className="button--group">
+          {isRecipeSaved() ? (
+            <button onClick={() => recipeAction("remove")}>
+              <ThumbUpAlt />
+            </button>
+          ) : (
+            <button onClick={() => recipeAction("save")}>
+              <ThumbUpOffAltOutlined />
+            </button>
+          )}
 
-        {recipe.userOwner === userID && (
+          {recipe.userOwner === userID && (
+            <button
+              className="button--bin"
+              onClick={() => recipeAction("delete")}
+            >
+              <Delete />
+            </button>
+          )}
+
           <button
-            className="button--bin"
-            onClick={() => recipeAction("delete")}
+            className="button-undo"
+            onClick={() => recipeAction("return")}
           >
-            <Delete />
+            <Undo />
           </button>
-        )}
-
-        <button className="button-undo" onClick={() => recipeAction("return")}>
-          <Undo />
-        </button>
+        </div>
+        <h1>{recipe.name}</h1>
+        <img src={recipe.imageUrl} alt={recipe.name} />
+        <div className="ingredients">
+          <h2>Ingredients</h2>
+          {recipe.ingredients?.map((ingredient, index) => {
+            return <p key={index}>{ingredient}</p>;
+          })}
+        </div>
+        <div className="instructions">
+          <h2>Instructions</h2>
+          <p>{recipe.instructions}</p>
+        </div>
+        <div>
+          <h2>Cooking Time:</h2>
+          <p>{recipe.cookingTime}</p>
+        </div>
       </div>
-      <h2>{recipe.name}</h2>
-      <img src={recipe.imageUrl} alt={recipe.name} />
-      <div className="recipe--ingredients">
-        Ingredients:
-        {recipe.ingredients?.map((ingredient, index) => {
-          return <div key={index}>{ingredient}</div>;
-        })}
-      </div>
-      <div className="recipe--instructions">
-        Instructions:
-        <div>{recipe.instructions}</div>
-      </div>
-      <p>Cooking Time: {recipe.cookingTime}</p>
-    </div>
+    </Container>
   );
 };
 
