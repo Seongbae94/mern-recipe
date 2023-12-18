@@ -8,10 +8,14 @@ const MyRecipe = () => {
   const userID = useGetUserID();
 
   const fetchRecipe = async () => {
-    const result = await axios.get(
-      `http://localhost:3001/recipes/myRecipes/${userID}`
-    );
-    setMyRecipes(result.data.myRecipes);
+    try {
+      const result = await axios.get(
+        `http://localhost:3001/recipes/myRecipes/${userID}`
+      );
+      setMyRecipes(result.data.myRecipes);
+    } catch (error) {
+      alert("failed to fetch my recipes");
+    }
   };
 
   useEffect(() => {

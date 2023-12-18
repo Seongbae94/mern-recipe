@@ -9,18 +9,29 @@ body {
     justify-content: space-between;
     font-size: 1.8rem;
 
-   .navbar__items {
+   .navbar--items {
         display: flex;
+        position: relative;
         align-items: center;
         width: 100%;
         height: 60px;
 
-        .navbar--login {
-            margin-left: auto;
-        }
+        .navbar--items--list {
+            display: flex;
+            height: 100%;
+            gap: 15px;
+    
+            .navbar--logout {
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                margin-right: 10px;
 
-        .navbar--logout {
-            margin: 0 10px 0 auto;
+                @media screen and (max-width: 768px) {
+                    display: none;
+                }
+            }
         }
 
         .navbar--logo {
@@ -36,33 +47,52 @@ body {
                 width: 60px;
                 height: 60px;
             }
+
+            @media screen and (max-width: 768px){
+                display: block;
+                color: white;
+                margin: 0 10px 0 auto;
+            }
+        }
+
+        .nav--item {
+            display: flex;
+            align-items: center;
+            height: calc(100% - 5px);
+
+            .navbar--login {
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                margin-right: 10px;
+            }
+
+            a {
+                text-decoration: none;
+                color: white;
+            }
+
+            a:hover {
+                color: dodgerblue;
+            }
+
+            @media screen and (max-width: 768px){
+                display: none;    
+            }
+
         }
 
         .navbar--secondary {
-            color: dodgerblue;
-        }
- 
-        a {
-            text-decoration: none;
-            color: white;
-            margin-right: 10px;
-        }
-
-        a:hover {
-            color: dodgerblue;
-        }
-
-        @media screen and (max-width: 768px){
             a {
-                display: none;
-            }
-
-            .navbar--hamburger {
-                display: block;
-                color: white;
-                margin-left: auto;
+                color: dodgerblue;
             }
         }
+
+        .navbar--marker {
+            border-bottom: 5px solid gray;
+        }
+
    }
 
   }

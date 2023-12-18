@@ -22,61 +22,81 @@ const Navbar = () => {
 
   const validateCheck = (path) => {
     if (!cookies.access_token) {
-      return path === "/create-recipe"
-        ? alert("Please login to create a recipe")
-        : alert("Please login to see saved recipes");
+      if (path === "/create-recipe") {
+        return alert("Please login to create a recipe");
+      }
+
+      if (path === "/saved-recipes") {
+        return alert("Please login to see saved recipes");
+      }
+
+      if (path === "/my-recipes") {
+        return alert("Please login to see my recipes");
+      }
     }
   };
 
   return (
     <div className="navbar">
-      <div className="navbar__items">
+      <div className="navbar--items">
         <div className="navbar--logo">logo</div>
         <div className="navbar--hamburger">
           <MenuIcon />
         </div>
 
-        {navlist.map((item, index) => {
-          const path = window.location.pathname;
-          const isSamePath = path === item.path;
+        <div className="navbar--items--list">
+          {navlist.map((item, index) => {
+            const path = window.location.pathname;
+            const isSamePath = path === item.path;
 
-          if (item.path === "/auth") {
-            return cookies.access_token ? (
-              <button key={index} className="navbar--logout" onClick={logout}>
-                Logout
-              </button>
-            ) : (
-              <Link key={index} className={`navbar--login`} to={item.path}>
-                {item.name}
-              </Link>
-            );
-          }
+            if (item.path === "/") {
+              return (
+                <div
+                  className={`nav--item ${
+                    isSamePath ? "navbar--secondary navbar--marker" : ""
+                  }`}
+                >
+                  <Link key={index} to={item.path}>
+                    {item.name}
+                  </Link>
+                </div>
+              );
+            }
 
-          if (item.path === "/") {
-            return (
-              <Link
-                key={index}
-                to={item.path}
-                className={`${isSamePath ? "navbar--secondary" : ""}`}
-              >
-                {item.name}
-              </Link>
-            );
-          }
+            if (item.path !== "/auth" && item.path !== "/") {
+              return (
+                <div
+                  className={`nav--item ${
+                    isSamePath ? "navbar--secondary navbar--marker" : ""
+                  }`}
+                >
+                  <Link
+                    key={index}
+                    to={cookies.access_token ? item.path : "/auth"}
+                    className={`${isSamePath ? "navbar--secondary" : ""}`}
+                    onClick={() => validateCheck(item.path)}
+                  >
+                    {item.name}
+                  </Link>
+                </div>
+              );
+            }
 
-          if (item.path !== "auth" && item.path !== "/") {
-            return (
-              <Link
-                key={index}
-                to={cookies.access_token ? item.path : "/auth"}
-                className={`${isSamePath ? "navbar--secondary" : ""}`}
-                onClick={() => validateCheck(item.path)}
-              >
-                {item.name}
-              </Link>
-            );
-          }
-        })}
+            if (item.path === "/auth") {
+              return cookies.access_token ? (
+                <button key={index} className="navbar--logout" onClick={logout}>
+                  Logout
+                </button>
+              ) : (
+                <div className="nav--item">
+                  <Link key={index} className={`navbar--login`} to={item.path}>
+                    {item.name}
+                  </Link>
+                </div>
+              );
+            }
+          })}
+        </div>
       </div>
     </div>
   );
