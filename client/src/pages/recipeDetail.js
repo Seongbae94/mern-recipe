@@ -9,8 +9,10 @@ import {
 import { useGetUserID } from "../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
 import Container from "../components/container";
+import { useCookies } from "react-cookie";
 
 const RecipeDetail = () => {
+  const [cookies, setCookies] = useCookies(["access_token"]);
   const [recipe, setRecipe] = useState([]);
   const [savedRecipes, setSavedRecipes] = useState([]);
   const userID = useGetUserID();
@@ -22,39 +24,79 @@ const RecipeDetail = () => {
 
     try {
       const result = await axios.get(
-        `http://localhost:3001/recipes${pathname}`
+        `http://localhost:3001/recipes${pathname}`,
+        { headers: { authorization: cookies.access_token } }
       );
-      setRecipe(result.data);
+
+      setRecipe(result.data.recipe);
     } catch (error) {
-      console.log(error);
+      //no authorization
+      if (error.response.status === 401) {
+        alert(error.response.data.message);
+        navigate("/auth");
+      }
+
+      //invalid request
+      if (error.response.status === 400) {
+        alert(error.response.data.message);
+        navigate(-1);
+      }
     }
   };
 
   const fetchSavedRecipe = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:3001/recipes/savedRecipes/ids/${userID}`
+        `http://localhost:3001/recipes/savedRecipes/ids/${userID}`,
+        { headers: { authorization: cookies.access_token } }
       );
+
       setSavedRecipes(result.data.savedRecipes);
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 401) {
+        alert(error.response.data.message);
+        navigate("/auth");
+      }
+
+      if (error.response.status === 400) {
+        alert(error.response.data.message);
+        navigate(-1);
+      }
     }
   };
 
   const recipeAction = async (action) => {
     if (action === "save" || action === "remove") {
       try {
-        await axios.put(`http://localhost:3001/recipes`, {
-          userID,
-          recipeID,
-          action,
-        });
+        await axios.put(
+          `http://localhost:3001/recipes`,
+          {
+            userID,
+            recipeID,
+            action,
+          },
+          { headers: { authorization: cookies.access_token } }
+        );
 
-        alert("This recipe is saved!");
+        if (action === "save") {
+          alert("This recipe is saved!");
+        }
+
+        if (action === "remove") {
+          alert("This recipe is unsaved!");
+        }
         fetchSavedRecipe();
         fetchRecipe();
       } catch (error) {
-        console.log(error);
+        if (error.response.status === 401) {
+          alert(error.response.data.message);
+          navigate("/auth");
+        }
+
+        if (error.response.status === 400) {
+          alert(error.response.data.message);
+          navigate(-1);
+        }
       }
     }
 
@@ -67,6 +109,7 @@ const RecipeDetail = () => {
             recipeID,
             userID,
           },
+          headers: { authorization: cookies.access_token },
         });
 
         alert("The recipe is deleted!");
@@ -74,7 +117,15 @@ const RecipeDetail = () => {
         fetchSavedRecipe();
         navigate("/");
       } catch (error) {
-        alert("An error occurred. Please try again!");
+        if (error.response.status === 401) {
+          alert(error.response.data.message);
+          navigate("/auth");
+        }
+
+        if (error.response.status === 400) {
+          alert(error.response.data.message);
+          navigate(-1);
+        }
       }
     }
 

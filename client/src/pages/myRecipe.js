@@ -3,19 +3,34 @@ import React, { useEffect, useState } from "react";
 import { useGetUserID } from "../hooks/useGetUserID";
 import RecipeCardList from "../components/recipeCardList";
 import Container from "../components/container";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const MyRecipe = () => {
+  const [cookies, setCookies] = useCookies(["access_token"]);
   const [myRecipes, setMyRecipes] = useState([]);
   const userID = useGetUserID();
+  const navigate = useNavigate();
 
   const fetchRecipe = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:3001/recipes/myRecipes/${userID}`
+        `http://localhost:3001/recipes/myRecipes/${userID}`,
+        { headers: { authorization: cookies.access_token } }
       );
       setMyRecipes(result.data.myRecipes);
     } catch (error) {
-      alert("failed to fetch my recipes");
+      //no authorization
+      if (error.response.status === 401) {
+        alert(error.response.data.message);
+        navigate("/auth");
+      }
+
+      //invalid request
+      if (error.response.status === 400) {
+        alert(error.response.data.message);
+        navigate(-1);
+      }
     }
   };
 

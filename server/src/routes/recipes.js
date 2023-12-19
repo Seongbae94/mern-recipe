@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { RecipeModel } from "../models/Recipes.js";
 import { UserModel } from "../models/Users.js";
+import { verifyToken } from "./users.js";
 
 const router = express.Router();
 
@@ -15,18 +16,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-//get a specific recipe
-router.get("/:recipeID", async (req, res) => {
-  try {
-    const recipe = await RecipeModel.findById(req.params.recipeID);
-    res.json(recipe);
-  } catch (error) {
-    res.json(error);
-  }
-});
-
 //create a recipe
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   const recipe = new RecipeModel(req.body);
 
   try {
@@ -38,7 +29,7 @@ router.post("/", async (req, res) => {
 });
 
 //save or remove a recipe
-router.put("/", async (req, res) => {
+router.put("/", verifyToken, async (req, res) => {
   try {
     const recipe = await RecipeModel.findById(req.body.recipeID);
     const user = await UserModel.findById(req.body.userID);
@@ -59,12 +50,12 @@ router.put("/", async (req, res) => {
 
     res.json({ savedRecipes: user.savedRecipes });
   } catch (error) {
-    res.json(error);
+    res.status(400).json({ message: "Please try again" });
   }
 });
 
 //delete a recipe
-router.delete("/", async (req, res) => {
+router.delete("/", verifyToken, async (req, res) => {
   try {
     const user = await UserModel.findById(req.body.userID);
 
@@ -79,22 +70,33 @@ router.delete("/", async (req, res) => {
     await RecipeModel.deleteOne({ _id: req.body.recipeID });
     res.json({ deleteRecipeID: req.body.recipeID });
   } catch (error) {
-    res.status(400).json(error);
+    // res.status(400).json(error);
+    res.status(400).json({ message: "Please try again" });
+  }
+});
+
+//get a specific recipe info
+router.get("/:recipeID", verifyToken, async (req, res) => {
+  try {
+    const recipe = await RecipeModel.findById(req.params.recipeID);
+    res.json({ recipe });
+  } catch (error) {
+    res.status(400).json({ message: "Please try again" });
   }
 });
 
 //get saved recipes Id
-router.get("/savedRecipes/ids/:userID", async (req, res) => {
+router.get("/savedRecipes/ids/:userID", verifyToken, async (req, res) => {
   try {
     const user = await UserModel.findById(req.params.userID);
     res.json({ savedRecipes: user?.savedRecipes });
   } catch (error) {
-    res.json(error);
+    res.status(400).json({ message: "Please try again" });
   }
 });
 
 //get whole saved recipes info
-router.get("/savedRecipes/:userID", async (req, res) => {
+router.get("/savedRecipes/:userID", verifyToken, async (req, res) => {
   try {
     const user = await UserModel.findById(req.params.userID);
     const savedRecipes = await RecipeModel.find({
@@ -103,12 +105,12 @@ router.get("/savedRecipes/:userID", async (req, res) => {
 
     res.json({ savedRecipes });
   } catch (error) {
-    res.json(error);
+    res.status(400).json({ message: "Please try again" });
   }
 });
 
 //get my reipces
-router.get("/myRecipes/:userID", async (req, res) => {
+router.get("/myRecipes/:userID", verifyToken, async (req, res) => {
   try {
     const recipes = await RecipeModel.find({ userOwner: req.params.userID });
     res.json({ myRecipes: recipes });
