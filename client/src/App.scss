@@ -142,6 +142,79 @@ body {
         font-size: 2rem;
     }
 
+    .auth {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+
+        form {
+            width: 100%;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px 1px gray;
+            gap: 10px;
+
+            h2 {
+                text-align: center;
+                margin: 0 0 20px 0;
+            }
+
+            h2::first-letter {
+                text-transform: uppercase;
+            }
+
+            button {
+                width: 100%;
+                max-width: 100%;
+                margin-left: 100%;
+                transform: translateX(-100%);
+
+                @media screen and (min-width: 768px) {
+                    max-width: 150px;
+                }
+            }
+
+            button::first-letter {
+                text-transform: uppercase;
+            }
+
+            .input--auth {
+                display: flex;
+                flex-direction: column;
+                label {
+                    width: 200px;
+                }
+                input {
+                    width: 100%;
+                    box-sizing: border-box;
+                }
+            }
+
+            .p--auth {
+                display: flex;
+                justify-content: center;
+                gap: 5px;
+
+                p {
+                    margin: 0;
+                    font-size: 1rem;
+                }
+
+                p:nth-of-type(2) {
+                    color: dodgerblue;
+                    cursor: pointer;
+                }
+
+                @media screen and (max-width: 768px) {
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+        }
+    }
+
     form {
         display:flex;
         flex-direction: column;
@@ -198,11 +271,11 @@ body {
             background-color: dodgerblue;
             outline: 0;
             border: 0;
+            cursor: pointer;
         }
 
         .button--end {
             margin-left: auto;
-            cursor: pointer;
         }
 
     }

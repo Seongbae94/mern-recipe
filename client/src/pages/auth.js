@@ -2,22 +2,25 @@ import React, { useState } from "react";
 import FormComponent from "../components/form";
 
 const Auth = () => {
+  const [isLogin, setIsLogin] = useState(true);
   return (
     <div>
-      <Login />
-      <Register />
+      {isLogin && (
+        <FormComponent
+          title="login"
+          setIsLogin={setIsLogin}
+          isLogin={isLogin}
+        />
+      )}
+      {!isLogin && (
+        <FormComponent
+          title="register"
+          setIsLogin={setIsLogin}
+          isLogin={isLogin}
+        />
+      )}
     </div>
   );
 };
 
 export default Auth;
-
-const Login = () => {
-  return <FormComponent title="login" />;
-};
-
-const Register = () => {
-  return <FormComponent title="register" />;
-};
-
-const Form = () => {};

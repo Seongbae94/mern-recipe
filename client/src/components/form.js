@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import Container from "../components/container";
 
-const FormComponent = ({ title }) => {
+const FormComponent = ({ title, isLogin, setIsLogin }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState({ username: "", password: "" });
 
@@ -21,9 +22,13 @@ const FormComponent = ({ title }) => {
     if (title === "register") {
       try {
         const result = await axios.post(url, body);
+        console.log(result);
+        setIsLogin(true);
         alert(result.data.message);
       } catch (error) {
-        console.log(error);
+        if (error.response.status === 409) {
+          alert(error.response.data.message);
+        }
       }
     }
 
@@ -45,35 +50,51 @@ const FormComponent = ({ title }) => {
   };
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <h2>{title}</h2>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            id="username"
-            type="text"
-            value={user.username}
-            onChange={(e) =>
-              setUser((prev) => ({ ...prev, username: e.target.value }))
-            }
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            id="password"
-            type="password"
-            value={user.password}
-            onChange={(e) =>
-              setUser((prev) => ({ ...prev, password: e.target.value }))
-            }
-          />
-        </div>
+    <Container>
+      <div className="auth">
+        <form onSubmit={onSubmit}>
+          <h2>{title}</h2>
+          <div className="input--auth">
+            <label htmlFor="username">Username:</label>
+            <input
+              id="username"
+              type="text"
+              value={user.username}
+              onChange={(e) =>
+                setUser((prev) => ({ ...prev, username: e.target.value }))
+              }
+            />
+          </div>
+          <div className="input--auth">
+            <label htmlFor="password">Password:</label>
+            <input
+              id="password"
+              type="password"
+              value={user.password}
+              onChange={(e) =>
+                setUser((prev) => ({ ...prev, password: e.target.value }))
+              }
+            />
+          </div>
 
-        <button type="submit">{title}</button>
-      </form>
-    </div>
+          {isLogin && (
+            <div className="p--auth">
+              <p>Don't have the account?</p>
+              <p onClick={() => setIsLogin(!isLogin)}>Click to register</p>
+            </div>
+          )}
+
+          {!isLogin && (
+            <div className="p--auth">
+              <p>Already registerd?</p>
+              <p onClick={() => setIsLogin(!isLogin)}>Click to Login</p>
+            </div>
+          )}
+
+          <button type="submit">{title}</button>
+        </form>
+      </div>
+    </Container>
   );
 };
 
