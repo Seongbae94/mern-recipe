@@ -58,7 +58,12 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="navbar--items">
-        <div className="navbar--logo">logo</div>
+        <div className="navbar--logo" onClick={() => navigate("/")}>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhwh3uQo9eGIlqOWRi9HYuxk8klLiKYdrGvw&usqp=CAU"
+            alt="logo-iamge"
+          />
+        </div>
         <div
           className="navbar--hamburger"
           onClick={() => setNavigationeOpen(!navigationOpen)}

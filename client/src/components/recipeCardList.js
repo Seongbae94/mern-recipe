@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import EmptyPage from "../pages/empty";
 
 const RecipeCardList = ({ recipes }) => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const RecipeCardList = ({ recipes }) => {
     navigate(`/${recipeID}`);
   };
 
-  return (
+  return recipes.length > 0 ? (
     <div className="recipe--card--list">
       {recipes.map((recipe, index) => {
         return (
@@ -24,6 +25,8 @@ const RecipeCardList = ({ recipes }) => {
         );
       })}
     </div>
+  ) : (
+    <EmptyPage />
   );
 };
 
