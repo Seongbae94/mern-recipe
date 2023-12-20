@@ -11,7 +11,7 @@ const Home = () => {
       const result = await axios.get("http://localhost:3001/recipes");
       setRecipes(result.data);
     } catch (error) {
-      console.log(error);
+      alert("failed to fetch recipes data");
     }
   };
 

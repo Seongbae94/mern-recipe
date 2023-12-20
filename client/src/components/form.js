@@ -7,12 +7,12 @@ import Container from "../components/container";
 const FormComponent = ({ title, isLogin, setIsLogin }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState({ username: "", password: "" });
-
+  const [loading, setLoading] = useState(false);
   const [_, setCookies] = useCookies(["access_token"]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     const body = {
       username: user.username,
       password: user.password,
@@ -22,12 +22,13 @@ const FormComponent = ({ title, isLogin, setIsLogin }) => {
     if (title === "register") {
       try {
         const result = await axios.post(url, body);
-        console.log(result);
         setIsLogin(true);
         alert(result.data.message);
       } catch (error) {
         if (error.response.status === 409) {
           alert(error.response.data.message);
+        } else {
+          alert(error.message);
         }
       }
     }
@@ -44,9 +45,15 @@ const FormComponent = ({ title, isLogin, setIsLogin }) => {
           alert(result.data.message);
         }
       } catch (error) {
-        console.log(error);
+        if (error.response?.status === 409) {
+          alert(error.response.data.message);
+        }
+
+        //network error
+        alert(error.message);
       }
     }
+    setLoading(false);
   };
 
   return (
@@ -97,7 +104,9 @@ const FormComponent = ({ title, isLogin, setIsLogin }) => {
             </div>
           )}
 
-          <button type="submit">{title}</button>
+          <button type="submit" disabled={loading ? true : false}>
+            {loading ? "Loading..." : title}
+          </button>
         </form>
       </div>
     </Container>
