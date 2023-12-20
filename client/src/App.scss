@@ -164,6 +164,15 @@ body {
             box-shadow: 0 0 5px 1px gray;
             gap: 10px;
 
+            .img--container {
+                display: flex;
+                justify-content: center;
+                img {
+                    width: 50%;
+                    min-width: 250px;
+                }
+            }
+
             h2 {
                 text-align: center;
                 margin: 0 0 20px 0;

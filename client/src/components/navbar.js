@@ -90,11 +90,30 @@ const Navbar = () => {
                     </Link>
                   );
                 }
+
+                if (item.path === "/") {
+                  return (
+                    <Link
+                      to={item.path}
+                      key={index}
+                      onClick={() => {
+                        return setNavigationeOpen(false);
+                      }}
+                    >
+                      {item.name}
+                    </Link>
+                  );
+                }
+
                 return (
                   <Link
-                    to={item.path}
+                    to={cookies.access_token ? item.path : "/auth"}
                     key={index}
-                    onClick={() => setNavigationeOpen(false)}
+                    onClick={() => {
+                      return (
+                        setNavigationeOpen(false), validateCheck(item.path)
+                      );
+                    }}
                   >
                     {item.name}
                   </Link>

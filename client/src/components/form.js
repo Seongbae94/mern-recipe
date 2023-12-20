@@ -53,6 +53,12 @@ const FormComponent = ({ title, isLogin, setIsLogin }) => {
     <Container>
       <div className="auth">
         <form onSubmit={onSubmit}>
+          <div className="img--container">
+            <img
+              src="https://media.istockphoto.com/id/1323727851/vector/cute-funny-mango-fruit-character-vector-hand-drawn-cartoon-kawaii-character-illustration.jpg?s=612x612&w=0&k=20&c=ama6pRaf2HXzRpJaTcTqSaAWwfohoESSQ9cFEhmOEAA="
+              alt="auth--img"
+            />
+          </div>
           <h2>{title}</h2>
           <div className="input--auth">
             <label htmlFor="username">Username:</label>
