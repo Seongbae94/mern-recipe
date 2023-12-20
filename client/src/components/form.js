@@ -18,7 +18,7 @@ const FormComponent = ({ title, isLogin, setIsLogin }) => {
       password: user.password,
     };
 
-    const url = `http://localhost:3001/auth/${title}`;
+    const url = `${process.env.REACT_APP_SERVER}/auth/${title}`;
     if (title === "register") {
       try {
         const result = await axios.post(url, body);

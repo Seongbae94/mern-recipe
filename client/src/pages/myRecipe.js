@@ -15,9 +15,10 @@ const MyRecipe = () => {
   const fetchRecipe = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:3001/recipes/myRecipes/${userID}`,
+        `${process.env.REACT_APP_SERVER}/recipes/myRecipes/${userID}`,
         { headers: { authorization: cookies.access_token } }
       );
+      console.log("result", result);
       setMyRecipes(result.data.myRecipes);
     } catch (error) {
       //no authorization

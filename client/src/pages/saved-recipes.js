@@ -15,7 +15,7 @@ const SavedRecipes = () => {
   const fetchRecipe = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:3001/recipes/savedRecipes/${userID}`,
+        `${process.env.REACT_APP_SERVER}/recipes/savedRecipes/${userID}`,
         { headers: { authorization: cookies.access_token } }
       );
       setSavedRecipes(result.data.savedRecipes);

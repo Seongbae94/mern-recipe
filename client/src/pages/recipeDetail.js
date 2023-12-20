@@ -24,7 +24,7 @@ const RecipeDetail = () => {
 
     try {
       const result = await axios.get(
-        `http://localhost:3001/recipes${pathname}`,
+        `${process.env.REACT_APP_SERVER}/recipes${pathname}`,
         { headers: { authorization: cookies.access_token } }
       );
 
@@ -47,7 +47,7 @@ const RecipeDetail = () => {
   const fetchSavedRecipe = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:3001/recipes/savedRecipes/ids/${userID}`,
+        `${process.env.REACT_APP_SERVER}/recipes/savedRecipes/ids/${userID}`,
         { headers: { authorization: cookies.access_token } }
       );
 
@@ -69,7 +69,7 @@ const RecipeDetail = () => {
     if (action === "save" || action === "remove") {
       try {
         await axios.put(
-          `http://localhost:3001/recipes`,
+          `${process.env.REACT_APP_SERVER}/recipes`,
           {
             userID,
             recipeID,
@@ -104,7 +104,7 @@ const RecipeDetail = () => {
       try {
         if (!window.confirm("Are you sure to delete this recipe?")) return null;
 
-        await axios.delete("http://localhost:3001/recipes", {
+        await axios.delete(`${process.env.REACT_APP_SERVER}/recipes`, {
           data: {
             recipeID,
             userID,

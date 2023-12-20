@@ -4,8 +4,10 @@ import { useGetUserID } from "../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
 import { Close } from "@mui/icons-material";
 import Container from "../components/container";
+import { useCookies } from "react-cookie";
 
 const CreateRecipe = () => {
+  const [cookies, setCookies] = useCookies(["access_token"]);
   const userID = useGetUserID();
   const [recipeInputs, setRecipeInputs] = useState({
     name: "",
@@ -49,11 +51,20 @@ const CreateRecipe = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:3001/recipes", recipeInputs);
+      await axios.post(
+        `${process.env.REACT_APP_SERVER}/recipes`,
+        recipeInputs,
+        { headers: { authorization: cookies.access_token } }
+      );
       alert("Recipe Created!");
       navigate("/");
     } catch (error) {
-      alert("Every field must be filled!");
+      console.log(error);
+      if (error.response?.status === 400) {
+        alert("Every field must be filled");
+      } else {
+        alert(error.message);
+      }
     }
   };
 

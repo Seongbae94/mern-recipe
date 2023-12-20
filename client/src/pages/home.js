@@ -8,7 +8,7 @@ const Home = () => {
 
   const fetchRecipe = async () => {
     try {
-      const result = await axios.get("http://localhost:3001/recipes");
+      const result = await axios.get(`${process.env.REACT_APP_SERVER}/recipes`);
       setRecipes(result.data);
     } catch (error) {
       alert("failed to fetch recipes data");
